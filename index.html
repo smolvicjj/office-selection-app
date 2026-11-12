@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Поиск, оценка и сравнение офисов в Ереване">
+  <title>Подбор офиса — Ереван</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar"><div class="topbar-inner">
+    <a class="brand" href="#"><span class="brand-mark">O</span><span>Подбор офиса</span></a>
+    <nav class="nav" aria-label="Основная навигация">
+      <button class="nav-btn active" data-target="home">Главная</button><button class="nav-btn" data-target="spaces">Все помещения</button><button class="nav-btn" data-target="compare">Сравнение</button><button class="nav-btn" data-target="settings">Настройки</button>
+    </nav>
+  </div></header>
+  <main class="container" id="mainShell">
+    <section class="page active" id="home-page">
+      <div class="header-panel"><div class="hero"><div><p class="eyebrow">АРЕНДА · ЕРЕВАН</p><h1>Найдите офис,<br>который подходит</h1><p>Собирайте объявления, сравнивайте условия и выбирайте лучший вариант по понятным критериям.</p></div><button class="primary-btn" id="quickAddBtn">＋ Добавить помещение</button></div><div class="stats-grid" id="statsGrid"></div></div>
+      <div class="section-header"><h2>Лучшие варианты</h2></div><div class="grid-3" id="topOfficesGrid"></div>
+      <div class="section-header"><h2>Карта помещений</h2><span class="muted">Схематичное расположение</span></div><div id="mapPanelContainer"></div>
+    </section>
+    <section class="page" id="spaces-page">
+      <div class="section-header"><div><p class="eyebrow">КАТАЛОГ</p><h2>Все помещения</h2></div><button class="primary-btn" id="showAddModalBtn">＋ Добавить</button></div>
+      <div class="toolbar"><div class="filters"><div class="field-inline"><label for="statusFilter">Статус</label><select class="select" id="statusFilter"><option value="all">Все статусы</option><option value="new">Новый</option><option value="called">Позвонил</option><option value="view">Просмотр</option><option value="rejected">Отказ</option><option value="finalist">Финалист</option></select></div><div class="field-inline"><label for="sortFilter">Сортировка</label><select class="select" id="sortFilter"><option value="score-desc">Оценка: выше сначала</option><option value="score-asc">Оценка: ниже сначала</option><option value="rent-asc">Аренда: дешевле сначала</option><option value="rent-desc">Аренда: дороже сначала</option><option value="area-desc">Площадь: больше сначала</option><option value="area-asc">Площадь: меньше сначала</option></select></div></div><button class="secondary-btn" id="resetFiltersBtn">Сбросить</button></div>
+      <div class="list-grid" id="officesGrid"></div>
+    </section>
+    <section class="page" id="compare-page"><div class="section-header"><div><p class="eyebrow">АНАЛИЗ</p><h2>Сравнение помещений</h2></div></div><div class="panel"><p class="muted">Выберите от двух до трёх вариантов:</p><div class="compare-list" id="compareSelection"></div></div><div class="panel compare-result" id="compareTableContainer"></div></section>
+    <section class="page" id="settings-page"><div class="section-header"><div><p class="eyebrow">ПЕРСОНАЛИЗАЦИЯ</p><h2>Настройки оценки</h2></div></div><div class="panel"><p class="muted">Настройте важность каждого фактора. Изменения пересчитают оценки вариантов.</p><div id="settingsContainer"></div></div></section>
+  </main>
+  <section id="directorView" class="director-root hidden" aria-live="polite"></section>
+  <div id="addOfficeModal" class="modal hidden" aria-modal="true" role="dialog" aria-labelledby="modalTitle"><div class="modal-window"><div class="modal-head"><h3 id="modalTitle">Добавить помещение</h3><button class="chip-btn small" id="closeModalBtn" type="button">Закрыть</button></div><div class="two-col modal-body">
+    <div class="panel"><p class="eyebrow">БЫСТРЫЙ ИМПОРТ</p><h3>Из объявления</h3><div class="field"><label for="listingUrl">Ссылка на объявление</label><input type="url" id="listingUrl" class="input" placeholder="https://list.am/..." /></div><div class="field"><label for="listingText">Текст объявления</label><textarea id="listingText" class="textarea" placeholder="Вставьте текст объявления, если сайт не позволяет автоматически получить данные"></textarea></div><div class="section-actions"><button class="primary-btn" id="parseListingBtn" type="button">Извлечь данные</button><button class="secondary-btn" id="useManualFieldsBtn" type="button">Перейти к форме</button></div><p class="helper" id="parseStatus">Сторонние сайты могут блокировать автоматический доступ (CORS). Вставьте текст объявления или заполните поля вручную.</p></div>
+    <div class="panel"><p class="eyebrow">НОВОЕ ПОМЕЩЕНИЕ</p><h3>Данные объекта</h3><form id="manualOfficeForm"><div class="form-grid">
+      <div class="field"><label for="name">Название / описание</label><input type="text" id="name" class="input" required></div><div class="field"><label for="address">Адрес</label><input type="text" id="address" class="input" required></div>
+      <div class="field"><label for="district">Район</label><input type="text" id="district" class="input" required></div><div class="field"><label for="area">Площадь, м²</label><input type="number" id="area" class="input" min="1" step="0.1" required></div>
+      <div class="field"><label for="floor">Этаж</label><input type="number" id="floor" class="input" min="-1" step="1" required></div><div class="field"><label for="rent">Аренда, USD / месяц</label><input type="number" id="rent" class="input" min="1" required></div>
+      <div class="field"><label for="pricePerSqm">Цена за м², USD</label><input type="number" id="pricePerSqm" class="input" min="1" step="0.01"></div><div class="field"><label for="contacts">Контакты</label><input type="text" id="contacts" class="input" placeholder="Телефон / email"></div>
+      <div class="field"><label for="condition">Состояние</label><select id="condition" class="select"><option value="Excellent">Отличное</option><option value="Good" selected>Хорошее</option><option value="Average">Среднее</option><option value="Poor">Требует ремонта</option></select></div><div class="field"><label for="hasSeparateOffices">Кабинеты от 30 м²</label><select id="hasSeparateOffices" class="select"><option value="true">Да</option><option value="false" selected>Нет</option></select></div>
+      <div class="field"><label for="separateOfficeArea">Площадь кабинетов, м²</label><input type="number" id="separateOfficeArea" class="input" min="0" value="0"></div><div class="field"><label for="originalUrl">Ссылка на объявление</label><input type="url" id="originalUrl" class="input" placeholder="https://..."></div>
+      <div class="field full"><label for="photoUpload">Фотографии (до 6)</label><input type="file" id="photoUpload" class="input" accept="image/*" multiple></div>
+    </div><button class="primary-btn form-submit" type="submit">Сохранить помещение</button></form></div>
+  </div></div></div>
+  <script src="app.js"></script>
+</body>
+</html>
